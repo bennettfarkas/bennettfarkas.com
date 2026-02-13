@@ -20,7 +20,7 @@ The site is static (GitHub Pages), so there's no server. Cloudflare Workers hand
 - **Worker URL**: `https://bennettfarkas-signup.mrsandman.workers.dev`
 - **Worker config**: `signup/wrangler.toml`
 - **Notion database ID**: `2df5c58f-feff-8025-b6f4-d37899d6aea0`
-- **Notion properties**: `Name` (title/email), `Signed Up` (date), `Source` (select)
+- **Notion properties**: `Name` (title), `Email` (email), `Signed Up` (date), `Source` (select: "bennettfarkas.com signup", "Manual")
 - **CORS origin**: `https://bennettfarkas.com`
 - **Secret**: `NOTION_API_KEY` (set via `cd signup && npx wrangler secret put NOTION_API_KEY`)
 

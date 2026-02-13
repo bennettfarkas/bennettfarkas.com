@@ -33,7 +33,7 @@ export default {
           properties: {
             Email: { email: email },
             'Signed Up': { date: { start: new Date().toISOString().split('T')[0] } },
-            Source: { select: { name: 'Landing Page' } },
+            Source: { select: { name: 'bennettfarkas.com signup' } },
           },
         }),
       });
