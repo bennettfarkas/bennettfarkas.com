@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bennett Farkas</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐺</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'EB Garamond', serif;
-            font-weight: 400;
+            font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+            font-weight: 300;
             margin: 0;
             min-height: 100vh;
             display: flex;
@@ -24,32 +21,22 @@
             text-align: center;
             padding: 2rem;
         }
-        .wolf {
-            font-size: 1.6rem;
-            margin: 0 0 1.2rem;
-            line-height: 1;
-        }
+
         h1 {
             font-weight: 400;
-            font-size: 2rem;
-            margin: 0 0 0.4rem;
-            letter-spacing: 0.01em;
-        }
-        .tagline {
-            font-size: 1.05rem;
-            font-style: italic;
-            color: #888;
-            margin: 0 0 2.5rem;
-            letter-spacing: 0.01em;
+            font-size: 1.4rem;
+            margin: 0 0 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: capitalize;
         }
         .role {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             margin: 0 0 1.5rem;
-            color: #666;
-            letter-spacing: 0.02em;
+            color: #999;
+            letter-spacing: 0.03em;
         }
         .role a {
-            color: #666;
+            color: #999;
             transition: color 0.2s;
         }
         .role a:hover {
@@ -59,6 +46,14 @@
             display: flex;
             gap: 1rem;
             justify-content: center;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .links.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .links a {
             color: #aaa;
@@ -74,14 +69,81 @@
             height: 16px;
             fill: currentColor;
         }
+        .links .portfolio-link {
+            width: 16px;
+            justify-content: center;
+        }
+        .links .portfolio-link svg {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .links .portfolio-link .portfolio-emoji {
+            display: none;
+            font-size: 22px;
+            line-height: 16px;
+        }
+        .links .portfolio-link.show-emoji svg {
+            display: none;
+        }
+        .links .portfolio-link.show-emoji .portfolio-emoji {
+            display: inline;
+        }
         .signup {
-            margin-top: 3rem;
+            margin-top: 4.5rem;
+        }
+        .signup-hint {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #999;
+            margin: 0 0 1.5rem;
+            letter-spacing: -0.02em;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            line-height: 1.6;
+            min-height: 2.6rem;
+        }
+        .signup-hint .cursor {
+            display: inline-block;
+            width: 0.5em;
+            height: 1.1em;
+            background: #999;
+            vertical-align: text-bottom;
+            animation: blink 0.6s step-end infinite;
+        }
+        .signup-hint .cursor.typing {
+            animation: none;
+            opacity: 1;
+        }
+        .signup-hint .typo {
+            cursor: default;
+            transition: color 0.15s;
+        }
+        .signup-hint .typo:hover {
+            color: #2a2a2a;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
         .signup-form {
             display: flex;
-            max-width: 280px;
+            max-width: 300px;
             margin: 0 auto;
             border-bottom: 1px solid #ccc;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .signup-form.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
         .signup-form input[type="email"] {
             flex: 1;
@@ -89,8 +151,10 @@
             border: none;
             outline: none;
             background: transparent;
-            font-family: 'EB Garamond', serif;
-            font-size: 0.9rem;
+            font-family: inherit;
+            caret-color: #999;
+            caret-shape: block;
+            font-size: 0.8rem;
             color: #2a2a2a;
             min-width: 0;
         }
@@ -102,9 +166,8 @@
             margin-left: 0.5rem;
             border: none;
             background: transparent;
-            font-family: 'EB Garamond', serif;
-            font-style: italic;
-            font-size: 0.9rem;
+            font-family: inherit;
+            font-size: 0.8rem;
             color: #aaa;
             cursor: pointer;
             white-space: nowrap;
@@ -113,38 +176,63 @@
         .signup-form button:hover {
             color: #2a2a2a;
         }
-        .success-msg {
-            display: none;
-            font-size: 0.9rem;
-            font-style: italic;
-            color: #888;
-        }
-        .success-msg.show {
-            display: block;
-        }
     </style>
 </head>
 <body>
     <main>
-        <p class="wolf">🐺</p>
-        <h1>Bennett Farkas</h1>
-        <p class="tagline">simplicity, sustainability & good vibes</p>
-        <p class="role">Brand & Marketing at <a href="https://openmined.org">OpenMined</a></p>
-        <nav class="links">
-            <a href="https://linkedin.com/in/bennettfarkas" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            <a href="https://github.com/bennettfarkas" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
-        </nav>
 
+        <h1>Bennett Farkas</h1>
+        <p class="role">Brand & Marketing at <a href="https://openmined.org">OpenMined</a></p>
         <div class="signup">
+            <p class="signup-hint" id="signup-hint"><span class="cursor"></span></p>
             <form class="signup-form" id="signup">
                 <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
-                <button type="submit">join list</button>
+                <button type="submit">join</button>
             </form>
-            <p class="success-msg" id="success">you're in.</p>
+            <p class="signup-hint" id="success" style="display:none"><span class="cursor"></span></p>
         </div>
+
+        <nav class="links" id="links">
+            <a href="https://linkedin.com/in/bennettfarkas" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="https://farkas.design" aria-label="Portfolio" class="portfolio-link" id="portfolio-link"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="portfolio-emoji"></span></a>
+        </nav>
     </main>
 
     <script>
+        function typeMessage(el, text) {
+            var cursor = el.querySelector('.cursor');
+            var i = 0;
+            // "Rock on! If I send something, I will email you."
+            function next() {
+                if (i >= text.length) { cursor.remove(); return; }
+                cursor.classList.add('typing');
+                el.insertBefore(document.createTextNode(text[i]), cursor);
+                i++;
+                var ch = text[i - 1];
+                var ahead = text.substring(i);
+                var behind = text.substring(0, i);
+                var delay;
+
+                // sentence break after "!" — real pause, new thought
+                if (ch === '!') delay = 600 + Math.random() * 200;
+                // period at end — settling
+                else if (ch === '.') delay = 300 + Math.random() * 200;
+                // comma — brief breath
+                else if (ch === ',') delay = 250 + Math.random() * 100;
+                // space before short words (I, a) — barely a gap
+                else if (ch === ' ' && ahead.match(/^[AI]\s/)) delay = 20 + Math.random() * 20;
+                // space after "on" before "!" — quick, energetic
+                else if (ch === ' ' && behind.endsWith('Rock on')) delay = 15;
+                // other spaces
+                else if (ch === ' ') delay = 50 + Math.random() * 40;
+                // default characters
+                else delay = 35 + Math.random() * 40;
+
+                setTimeout(next, delay);
+            }
+            setTimeout(next, 300);
+        }
+
         document.getElementById('signup').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = e.target;
@@ -163,7 +251,9 @@
 
                 if (res.ok) {
                     form.style.display = 'none';
-                    document.getElementById('success').classList.add('show');
+                    var successEl = document.getElementById('success');
+                    successEl.style.display = '';
+                    typeMessage(successEl, "Rock on! If I send something, I will email you.");
                 } else {
                     btn.textContent = 'try again';
                     btn.disabled = false;
@@ -173,6 +263,149 @@
                 btn.disabled = false;
             }
         });
+        (function() {
+            var hint = document.getElementById('signup-hint');
+            var cursor = hint.querySelector('.cursor');
+            var chars = [];
+
+            var form = document.getElementById('signup');
+            var links = document.getElementById('links');
+
+            var steps = [
+                {type: "I might start senmdin"},
+                {pause: 500},
+                {delete: 6},
+                {pause: 150},
+                {type: "ending toughts & little things I'm working on. No promisses."},
+                {pause: 400},
+                {enter: true}
+            ];
+
+            var stepIdx = 0;
+            var charIdx = 0;
+
+            function addChar(ch) {
+                var node = document.createTextNode(ch);
+                hint.insertBefore(node, cursor);
+                chars.push(node);
+            }
+
+            function removeChar() {
+                if (chars.length) {
+                    var node = chars.pop();
+                    hint.removeChild(node);
+                }
+            }
+
+            function typeDelay(ch) {
+                if (ch === '.' || ch === '&') return 300 + Math.random() * 200;
+                if (ch === ',') return 200 + Math.random() * 150;
+                if (ch === ' ') return 40 + Math.random() * 60;
+                return 30 + Math.random() * 50;
+            }
+
+            function run() {
+                if (stepIdx >= steps.length) return;
+                var step = steps[stepIdx];
+
+                if (step.pause !== undefined) {
+                    cursor.classList.remove('typing');
+                    stepIdx++;
+                    setTimeout(run, step.pause);
+                } else if (step.type !== undefined) {
+                    cursor.classList.add('typing');
+                    if (charIdx < step.type.length) {
+                        var ch = step.type[charIdx];
+                        addChar(ch);
+                        charIdx++;
+                        setTimeout(run, typeDelay(ch));
+                    } else {
+                        stepIdx++;
+                        charIdx = 0;
+                        run();
+                    }
+                } else if (step.delete !== undefined) {
+                    cursor.classList.add('typing');
+                    if (charIdx < step.delete) {
+                        removeChar();
+                        charIdx++;
+                        setTimeout(run, 50 + Math.random() * 30);
+                    } else {
+                        stepIdx++;
+                        charIdx = 0;
+                        run();
+                    }
+                } else if (step.enter) {
+                    cursor.remove();
+                    // Rebuild text with hoverable typo spans
+                    var fullText = hint.textContent;
+                    while (hint.firstChild) hint.removeChild(hint.firstChild);
+                    var typos = [{wrong: 'toughts', right: 'thoughts'}, {wrong: 'promisses', right: 'promises'}];
+                    var remaining = fullText;
+                    typos.forEach(function(t) {
+                        var idx = remaining.indexOf(t.wrong);
+                        if (idx > -1) {
+                            hint.appendChild(document.createTextNode(remaining.substring(0, idx)));
+                            var span = document.createElement('span');
+                            span.className = 'typo';
+                            span.textContent = t.wrong;
+                            span.addEventListener('mouseenter', function() {
+                                this.textContent = t.right;
+                                this.classList.remove('typo');
+                            });
+                            hint.appendChild(span);
+                            remaining = remaining.substring(idx + t.wrong.length);
+                        }
+                    });
+                    if (remaining) hint.appendChild(document.createTextNode(remaining));
+                    form.classList.add('visible');
+                    form.querySelector('input[type="email"]').focus();
+                    setTimeout(function() {
+                        links.classList.add('visible');
+                        if (window.startEmojiFlicker) window.startEmojiFlicker();
+                    }, 1000);
+                    stepIdx++;
+                }
+            }
+
+            setTimeout(run, 1000);
+        })();
+
+        (function() {
+            var emojis = [
+                '🤯','🍁','🍄','🍕','👨🏼‍🎨','🃏',
+                '🔥','🎃','🦊','🌮','🎉',
+                '🍺','👍🏼','😂','🤔','👋🏼','🤙🏼','🌙','🌛','✨','🍳','💡','⚡️','🚴🏼‍♂️','🚐',
+                '🦤','🦥','🦔','🍄‍🟫','🪺','🥔','🧇','🥞','🥐','🌯','🫘','☕️',
+                '🌲','🐢','🦖','🐊','🐉','🌵','🍀','🌱','🪴','🥑','🥏','👌🏼','👨🏼‍🔬',
+                '🐳','🌎','👨🏼‍💻','🦸🏼‍♂️','🐬','🦚','🏔️','💎',
+                '😈','🔮','💜','🧙🏼‍♂️',
+                '🥳','🫶🏻','🧠','🪸','🍦','🦩','🦄',
+                '👻','🐻‍❄️','💀','😶‍🌫️','🤘🏼','😑','🤖','🦾','🐺','🦛','🚲','⛰️',
+                '☠️','👀','♠️','🏴‍☠️'
+            ];
+            var link = document.getElementById('portfolio-link');
+            var emojiSpan = link.querySelector('.portfolio-emoji');
+
+            function flashEmoji() {
+                var emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                emojiSpan.textContent = emoji;
+                link.classList.add('show-emoji');
+                setTimeout(function() {
+                    link.classList.remove('show-emoji');
+                }, 200);
+                scheduleNext();
+            }
+
+            function scheduleNext() {
+                var delay = 3000 + Math.random() * 2000;
+                setTimeout(flashEmoji, delay);
+            }
+
+            window.startEmojiFlicker = function() {
+                setTimeout(scheduleNext, 3000);
+            };
+        })();
     </script>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "130d7b8c44694e9194b0b68a28fba207"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
