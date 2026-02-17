@@ -49,7 +49,7 @@
             margin-top: 2rem;
             opacity: 0;
             transform: translateY(4px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         .links.visible {
             opacity: 1;
@@ -204,9 +204,21 @@
             var i = 0;
             // "Rock on! If I send something, I will email you."
             function next() {
-                if (i >= text.length) { cursor.remove(); return; }
+                if (i >= text.length) {
+                    cursor.remove();
+                    if (el.id === 'success') {
+                        setTimeout(function() {
+                            el.appendChild(document.createTextNode(' 😉'));
+                        }, 600);
+                    }
+                    return;
+                }
                 cursor.classList.add('typing');
-                el.insertBefore(document.createTextNode(text[i]), cursor);
+                if (text[i] === '\n') {
+                    el.insertBefore(document.createElement('br'), cursor);
+                } else {
+                    el.insertBefore(document.createTextNode(text[i]), cursor);
+                }
                 i++;
                 var ch = text[i - 1];
                 var ahead = text.substring(i);
@@ -253,7 +265,7 @@
                     form.style.display = 'none';
                     var successEl = document.getElementById('success');
                     successEl.style.display = '';
-                    typeMessage(successEl, "Rock on! If I send something, I will email you.");
+                    typeMessage(successEl, "Rock on! If I send something,\nI will email you.");
                 } else {
                     btn.textContent = 'try again';
                     btn.disabled = false;
@@ -363,7 +375,7 @@
                     setTimeout(function() {
                         links.classList.add('visible');
                         if (window.startEmojiFlicker) window.startEmojiFlicker();
-                    }, 1000);
+                    }, 2000);
                     stepIdx++;
                 }
             }
