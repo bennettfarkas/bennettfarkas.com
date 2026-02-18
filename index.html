@@ -350,6 +350,8 @@
                 });
 
                 if (res.ok) {
+                    var signupContainer = document.querySelector('.signup');
+                    signupContainer.style.height = signupContainer.offsetHeight + 'px';
                     form.style.visibility = 'hidden';
                     var hintEl = document.getElementById('signup-hint');
                     deleteMessage(hintEl, function() {
