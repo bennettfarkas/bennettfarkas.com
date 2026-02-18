@@ -247,6 +247,7 @@
 
         function deleteMessage(el, callback) {
             var text = el.textContent;
+            el.style.height = el.offsetHeight + 'px';
             var cursor = document.createElement('span');
             cursor.className = 'cursor typing';
             while (el.firstChild) el.removeChild(el.firstChild);
@@ -257,6 +258,7 @@
             function deleteNext() {
                 if (i <= 0) {
                     while (el.firstChild) el.removeChild(el.firstChild);
+                    el.style.height = '';
                     callback();
                     return;
                 }
