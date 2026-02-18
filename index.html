@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bennett Farkas</title>
+    <meta name="description" content="Bennett Farkas — Brand & Marketing at OpenMined.">
+    <link rel="canonical" href="https://bennettfarkas.com/">
+    <meta property="og:title" content="Bennett Farkas">
+    <meta property="og:description" content="Brand & Marketing at OpenMined.">
+    <meta property="og:url" content="https://bennettfarkas.com/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Bennett Farkas">
+    <meta name="twitter:description" content="Brand & Marketing at OpenMined.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>BF</text></svg>">
 
     <style>
         body {
@@ -27,20 +37,23 @@
             font-size: 1.4rem;
             margin: 0 0 0.8rem;
             letter-spacing: 0.05em;
-            text-transform: capitalize;
         }
         .role {
             font-size: 0.8rem;
             margin: 0 0 1.5rem;
-            color: #999;
+            color: #767676;
             letter-spacing: 0.03em;
         }
         .role a {
-            color: #999;
+            color: #767676;
             transition: color 0.2s;
         }
-        .role a:hover {
+        .role a:hover, .role a:focus-visible {
             color: #2a2a2a;
+        }
+        .role a:focus-visible {
+            outline: 1px solid #2a2a2a;
+            outline-offset: 2px;
         }
         .links {
             display: flex;
@@ -56,13 +69,20 @@
             transform: translateY(0);
         }
         .links a {
-            color: #aaa;
+            color: #767676;
             text-decoration: none;
             display: flex;
+            padding: 0.875rem;
+            margin: -0.875rem;
             transition: color 0.2s;
         }
         .links a:hover {
             color: #2a2a2a;
+        }
+        .links a:focus-visible {
+            color: #2a2a2a;
+            outline: 1px solid #2a2a2a;
+            outline-offset: 4px;
         }
         .links svg {
             width: 16px;
@@ -72,6 +92,24 @@
         .links .portfolio-link {
             width: 16px;
             justify-content: center;
+            position: relative;
+        }
+        .links .portfolio-link::after {
+            content: 'www.farkas.design';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 0.25rem;
+            font-size: 0.65rem;
+            color: #767676;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        .links .portfolio-link:hover::after {
+            opacity: 1;
         }
         .links .portfolio-link svg {
             fill: none;
@@ -97,7 +135,7 @@
         .signup-hint {
             font-size: 0.8rem;
             font-weight: 400;
-            color: #999;
+            color: #767676;
             margin: 0 0 1.5rem;
             letter-spacing: -0.02em;
             max-width: 300px;
@@ -194,13 +232,17 @@
             background: transparent;
             font-family: inherit;
             font-size: 0.8rem;
-            color: #aaa;
+            color: #767676;
             cursor: pointer;
             white-space: nowrap;
             transition: color 0.2s;
         }
-        .signup-form button:hover {
+        .signup-form button:hover, .signup-form button:focus-visible {
             color: #2a2a2a;
+        }
+        .signup-form button:focus-visible {
+            outline: 1px solid #2a2a2a;
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -213,7 +255,7 @@
             <p class="signup-hint" id="signup-hint"><span class="cursor"></span></p>
             <form class="signup-form" id="signup">
                 <div class="input-wrap">
-                    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-1p-ignore>
+                    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-1p-ignore aria-label="Email address">
                     <span class="input-cursor" id="input-cursor"></span>
                 </div>
                 <button type="submit">join</button>
@@ -222,8 +264,8 @@
         </div>
 
         <nav class="links" id="links">
-            <a href="https://linkedin.com/in/bennettfarkas" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-            <a href="https://farkas.design" aria-label="Portfolio" class="portfolio-link" id="portfolio-link"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="portfolio-emoji"></span></a>
+            <a href="https://linkedin.com/in/bennettfarkas" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="https://farkas.design" aria-label="Portfolio" class="portfolio-link" id="portfolio-link"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="portfolio-emoji"></span></a>
         </nav>
     </main>
 
@@ -350,6 +392,7 @@
                 });
 
                 if (res.ok) {
+                    if (window.cancelIntroTyping) window.cancelIntroTyping();
                     var signupContainer = document.querySelector('.signup');
                     signupContainer.style.height = signupContainer.offsetHeight + 'px';
                     form.style.visibility = 'hidden';
@@ -365,7 +408,7 @@
                     btn.textContent = 'try again';
                     btn.disabled = false;
                 }
-            } catch {
+            } catch (e) {
                 btn.textContent = 'try again';
                 btn.disabled = false;
             }
@@ -374,6 +417,9 @@
             var hint = document.getElementById('signup-hint');
             var cursor = hint.querySelector('.cursor');
             var chars = [];
+            var cancelled = false;
+
+            window.cancelIntroTyping = function() { cancelled = true; };
 
             var form = document.getElementById('signup');
             var links = document.getElementById('links');
@@ -412,7 +458,7 @@
             }
 
             function run() {
-                if (stepIdx >= steps.length) return;
+                if (cancelled || stepIdx >= steps.length) return;
                 var step = steps[stepIdx];
 
                 if (step.pause !== undefined) {
@@ -514,6 +560,8 @@
             ];
             var link = document.getElementById('portfolio-link');
             var emojiSpan = link.querySelector('.portfolio-emoji');
+            var timerId = null;
+            var running = false;
 
             function flashEmoji() {
                 var emoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -527,11 +575,21 @@
 
             function scheduleNext() {
                 var delay = 3000 + Math.random() * 2000;
-                setTimeout(flashEmoji, delay);
+                timerId = setTimeout(flashEmoji, delay);
             }
 
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    clearTimeout(timerId);
+                    timerId = null;
+                } else if (running) {
+                    scheduleNext();
+                }
+            });
+
             window.startEmojiFlicker = function() {
-                setTimeout(scheduleNext, 3000);
+                running = true;
+                timerId = setTimeout(scheduleNext, 3000);
             };
         })();
     </script>
