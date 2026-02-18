@@ -350,10 +350,11 @@
                 });
 
                 if (res.ok) {
-                    form.style.display = 'none';
+                    form.style.visibility = 'hidden';
                     var hintEl = document.getElementById('signup-hint');
                     deleteMessage(hintEl, function() {
                         hintEl.style.display = 'none';
+                        form.style.display = 'none';
                         var successEl = document.getElementById('success');
                         successEl.style.display = '';
                         typeMessage(successEl, "Rock on! If I send something,\nI will email you.");
