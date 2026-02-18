@@ -121,10 +121,15 @@
         }
         .signup-hint .typo {
             cursor: default;
-            transition: color 0.15s;
+            position: relative;
         }
-        .signup-hint .typo:hover {
-            color: #2a2a2a;
+        .signup-hint .typo-cursor {
+            display: inline-block;
+            width: 0.5em;
+            height: 1.1em;
+            background: #999;
+            vertical-align: text-bottom;
+            position: absolute;
         }
         @keyframes blink {
             0%, 100% { opacity: 1; }
@@ -145,18 +150,39 @@
             transform: translateY(0);
             pointer-events: auto;
         }
-        .signup-form input[type="email"] {
+        .input-wrap {
             flex: 1;
+            position: relative;
+            min-width: 0;
+        }
+        .signup-form input[type="email"] {
+            width: 100%;
             padding: 0.5rem 0;
             border: none;
             outline: none;
             background: transparent;
             font-family: inherit;
-            caret-color: #999;
-            caret-shape: block;
+            caret-color: transparent;
             font-size: 0.8rem;
             color: #2a2a2a;
             min-width: 0;
+        }
+        .input-cursor {
+            position: absolute;
+            top: 0.5rem;
+            left: 0;
+            width: 0.4em;
+            height: 0.95em;
+            background: #999;
+            pointer-events: none;
+            opacity: 0;
+        }
+        .input-cursor.visible {
+            animation: blink 0.6s step-end infinite;
+        }
+        .input-cursor.visible.typing {
+            animation: none;
+            opacity: 1;
         }
         .signup-form input[type="email"]::placeholder {
             color: #bbb;
@@ -186,7 +212,10 @@
         <div class="signup">
             <p class="signup-hint" id="signup-hint"><span class="cursor"></span></p>
             <form class="signup-form" id="signup">
-                <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-1p-ignore>
+                <div class="input-wrap">
+                    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-1p-ignore>
+                    <span class="input-cursor" id="input-cursor"></span>
+                </div>
                 <button type="submit">join</button>
             </form>
             <p class="signup-hint" id="success" style="display:none"><span class="cursor"></span></p>
@@ -268,6 +297,41 @@
             }
             setTimeout(deleteNext, 300);
         }
+
+        (function() {
+            var input = document.querySelector('#signup input[type="email"]');
+            var cur = document.getElementById('input-cursor');
+            var cs = getComputedStyle(input);
+            var measure = document.createElement('span');
+            measure.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-family:' + cs.fontFamily + ';font-size:' + cs.fontSize + ';letter-spacing:' + cs.letterSpacing;
+            document.body.appendChild(measure);
+
+            var blinkTimer;
+            function updatePos() {
+                measure.textContent = input.value || '';
+                var pos = measure.offsetWidth + 1 - input.scrollLeft;
+                cur.style.left = pos + 'px';
+                cur.style.visibility = (pos >= 0 && pos < input.offsetWidth) ? 'visible' : 'hidden';
+            }
+            function flashSolid() {
+                cur.classList.add('typing');
+                clearTimeout(blinkTimer);
+                blinkTimer = setTimeout(function() {
+                    cur.classList.remove('typing');
+                }, 400);
+            }
+
+            input.addEventListener('input', function() { updatePos(); flashSolid(); });
+            input.addEventListener('keydown', function() { setTimeout(updatePos, 0); });
+            input.addEventListener('focus', function() {
+                cur.classList.add('visible');
+                updatePos();
+            });
+            input.addEventListener('blur', function() {
+                cur.classList.remove('visible', 'typing');
+                clearTimeout(blinkTimer);
+            });
+        })();
 
         document.getElementById('signup').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -390,8 +454,29 @@
                             span.className = 'typo';
                             span.textContent = t.wrong;
                             span.addEventListener('mouseenter', function() {
-                                this.textContent = t.right;
-                                this.classList.remove('typo');
+                                var el = this;
+                                if (el.dataset.animating) return;
+                                el.dataset.animating = '1';
+                                var wrong = t.wrong;
+                                var right = t.right;
+                                var maxLen = Math.max(wrong.length, right.length);
+                                var cur = document.createElement('span');
+                                cur.className = 'typo-cursor';
+                                el.appendChild(cur);
+                                var i = 0;
+                                function sweep() {
+                                    if (i > maxLen) {
+                                        cur.remove();
+                                        el.textContent = right;
+                                        el.classList.remove('typo');
+                                        return;
+                                    }
+                                    el.textContent = right.substring(0, i) + wrong.substring(i);
+                                    el.appendChild(cur);
+                                    i++;
+                                    setTimeout(sweep, 45);
+                                }
+                                sweep();
                             });
                             hint.appendChild(span);
                             remaining = remaining.substring(idx + t.wrong.length);
