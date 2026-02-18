@@ -186,7 +186,7 @@
         <div class="signup">
             <p class="signup-hint" id="signup-hint"><span class="cursor"></span></p>
             <form class="signup-form" id="signup">
-                <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+                <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" data-1p-ignore>
                 <button type="submit">join</button>
             </form>
             <p class="signup-hint" id="success" style="display:none"><span class="cursor"></span></p>
@@ -245,6 +245,28 @@
             setTimeout(next, 300);
         }
 
+        function deleteMessage(el, callback) {
+            var text = el.textContent;
+            var cursor = document.createElement('span');
+            cursor.className = 'cursor typing';
+            while (el.firstChild) el.removeChild(el.firstChild);
+            var textNode = document.createTextNode(text);
+            el.appendChild(textNode);
+            el.appendChild(cursor);
+            var i = text.length;
+            function deleteNext() {
+                if (i <= 0) {
+                    while (el.firstChild) el.removeChild(el.firstChild);
+                    callback();
+                    return;
+                }
+                i--;
+                textNode.textContent = text.substring(0, i);
+                setTimeout(deleteNext, 25 + Math.random() * 20);
+            }
+            setTimeout(deleteNext, 300);
+        }
+
         document.getElementById('signup').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = e.target;
@@ -263,9 +285,13 @@
 
                 if (res.ok) {
                     form.style.display = 'none';
-                    var successEl = document.getElementById('success');
-                    successEl.style.display = '';
-                    typeMessage(successEl, "Rock on! If I send something,\nI will email you.");
+                    var hintEl = document.getElementById('signup-hint');
+                    deleteMessage(hintEl, function() {
+                        hintEl.style.display = 'none';
+                        var successEl = document.getElementById('success');
+                        successEl.style.display = '';
+                        typeMessage(successEl, "Rock on! If I send something,\nI will email you.");
+                    });
                 } else {
                     btn.textContent = 'try again';
                     btn.disabled = false;
